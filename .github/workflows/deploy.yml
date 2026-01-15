@@ -29,6 +29,9 @@ jobs:
       - name: Build application
         run: npx ng build --configuration production --base-href=/Formation/
       
+      - name: Copy files to root
+        run: cp -r dist/formation/browser/* dist/formation/
+      
       - name: Add .nojekyll
         run: touch dist/formation/.nojekyll
       
@@ -37,5 +40,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/formation
+
           
           
