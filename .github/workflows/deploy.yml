@@ -27,7 +27,7 @@ jobs:
         run: npm ci --legacy-peer-deps
       
       - name: Build application
-        run: ng build --configuration production --base-href=/Formation/
+        run: npx ng build --configuration production --base-href=/Formation/
       
       - name: Add .nojekyll
         run: touch dist/Formation/browser/.nojekyll
