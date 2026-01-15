@@ -1,0 +1,43 @@
+<div class="client-card">
+  
+  <!-- Header de la carte -->
+  <div class="card-header">
+    <h3 class="client-name">{{ client.name }}</h3>
+    <div class="card-badges">
+      <span class="badge" [ngClass]="'status-' + client.status">
+        {{ client.status | uppercase }}
+      </span>
+      <span class="badge" [ngClass]="'priority-' + client.priority">
+        {{ client.priority | uppercase }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Contenu de la carte -->
+  <div class="card-body">
+    <div class="info-row">
+      <span class="icon">📧</span>
+      <span class="value">{{ client.email }}</span>
+    </div>
+    <div class="info-row">
+      <span class="icon">📞</span>
+      <span class="value">{{ client.phone }}</span>
+    </div>
+    <div class="info-row">
+      <span class="icon">💼</span>
+      <span class="value">{{ client.company }}</span>
+    </div>
+    <div class="info-row">
+      <span class="icon">💰</span>
+      <span class="value">{{ client.revenue | number:'1.0-0' }}€</span>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="card-actions">
+    <button class="btn btn-info" (click)="onSelect()">Détail</button>
+    <button class="btn btn-primary" (click)="onEdit()">Éditer</button>
+    <button class="btn btn-danger" (click)="onDelete()">Supprimer</button>
+  </div>
+
+</div>

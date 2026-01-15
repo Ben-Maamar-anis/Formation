@@ -1,0 +1,18 @@
+<!-- LAYOUT UNIQUEMENT (pas de clients ici) -->
+
+<header class="app-header">
+  <div class="app-header__left">
+    <h1>{{ title }}</h1>
+  </div>
+  
+  <div class="app-header__right" *ngIf="currentUser">
+    <a routerLink="/clients" routerLinkActive="active">clients</a>
+    <a routerLink="/dashboard" routerLinkActive="active">dashboard</a>
+    
+    <span class="user-name">{{ currentUser.name }}</span>
+    <button class="btn-logout" (click)="onLogout()">Logout</button>
+  </div>
+</header>
+
+<!-- Les routes s'affichent ICI SEULEMENT -->
+<router-outlet></router-outlet>

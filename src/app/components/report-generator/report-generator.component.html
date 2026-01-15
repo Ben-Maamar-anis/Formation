@@ -1,0 +1,12 @@
+<div class="report-container">
+  <div *ngIf="message" class="message" [class.error]="message.includes('❌')">
+    {{ message }}
+  </div>
+  <button 
+    class="btn btn-pdf" 
+    (click)="generateReport()" 
+    [disabled]="isGenerating"
+  >
+    {{ isGenerating ? '⏳ Génération...' : '📄 Générer PDF' }}
+  </button>
+</div>

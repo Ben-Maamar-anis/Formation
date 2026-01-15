@@ -1,0 +1,63 @@
+<div class="dashboard-container">
+  
+  <!-- Header de bienvenue -->
+  <div class="dashboard-header">
+    <div>
+      <h1>Bienvenue, {{ currentUser?.name }}! 👋</h1>
+      <p class="subtitle">Voici un aperçu de votre CRM</p>
+    </div>
+  </div>
+
+  <!-- Grille des statistiques -->
+  <div class="stats-grid">
+    
+    <!-- Carte 1 : Total Clients -->
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <h3 class="stat-label">Total Clients</h3>
+      <p class="stat-value">{{ stats?.totalClients }}</p>
+      <p class="stat-desc">Tous vos clients</p>
+    </div>
+
+    <!-- Carte 2 : Clients Actifs -->
+    <div class="stat-card">
+      <div class="stat-icon">💼</div>
+      <h3 class="stat-label">Clients Actifs</h3>
+      <p class="stat-value">{{ stats?.activeClients }}</p>
+      <p class="stat-desc">Clients en cours</p>
+    </div>
+
+    <!-- Carte 3 : Prospects -->
+    <div class="stat-card">
+      <div class="stat-icon">🎯</div>
+      <h3 class="stat-label">Prospects</h3>
+      <p class="stat-value">{{ stats?.prospectClients }}</p>
+      <p class="stat-desc">À convertir</p>
+    </div>
+
+    <!-- Carte 4 : Revenue -->
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <h3 class="stat-label">Chiffre Total</h3>
+      <p class="stat-value">{{ (stats?.totalRevenue | number:'1.0-0') }}€</p>
+      <p class="stat-desc">Revenu généré</p>
+    </div>
+
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="quick-actions">
+    <h2>Actions rapides</h2>
+    <div class="actions-grid">
+      <a routerLink="/clients" class="action-card">
+        <span class="icon">📋</span>
+        <span>Voir tous les clients</span>
+      </a>
+      <a routerLink="/clients/new" class="action-card">
+        <span class="icon">➕</span>
+        <span>Ajouter un client</span>
+      </a>
+    </div>
+  </div>
+
+</div>

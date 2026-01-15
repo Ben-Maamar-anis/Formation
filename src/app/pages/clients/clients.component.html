@@ -1,0 +1,231 @@
+<!-- pages/clients/clients.component.html -->
+<div class="clients-container">
+  
+  <!-- Barre de recherche et filtres -->
+  <div class="filters-section">
+    <input 
+      type="text"
+      placeholder="Rechercher..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="search($event)"
+    >
+    <select [(ngModel)]="selectedStatus" (change)="filter()">
+      <option value="all">Tous les statuts</option>
+      <option value="client">Clients</option>
+      <option value="prospect">Prospects</option>
+      <option value="inactive">Inactifs</option>
+    </select>
+    <app-export-button 
+      [clients]="filteredClients" 
+      filename="clients_export">
+    </app-export-button>
+    <app-report-generator [clients]="clients"></app-report-generator>
+  </div>
+  <!-- ===== BARRE DE RECHERCHE ET FILTRES ===== -->
+<div class="search-filter-container">
+  
+  <!-- Titre et compteur -->
+  <div class="search-header">
+    <h3>🔍 Recherche & Filtres</h3>
+    <span class="result-count" *ngIf="hasActiveFilters">
+      📊 {{ filteredCount }} résultat(s) trouvé(s)
+    </span>
+  </div>
+
+  <!-- Barre de recherche principale -->
+  <div class="search-bar">
+    <input 
+      type="text" 
+      class="search-input" 
+      placeholder="🔍 Rechercher par nom, email, entreprise..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onFilterChange()"
+      (keyup.enter)="filter()">
+    
+    <button 
+      *ngIf="searchTerm" 
+      class="clear-search-btn"
+      (click)="searchTerm = ''; onFilterChange()"
+      title="Effacer la recherche">
+      ✕
+    </button>
+  </div>
+
+  <!-- Filtres avancés -->
+  <div class="filters-grid">
+    
+    <!-- Filtre Statut -->
+    <div class="filter-group">
+      <label for="filter-status" class="filter-label">📋 Statut</label>
+      <select 
+        id="filter-status"
+        class="filter-select" 
+        [(ngModel)]="selectedStatus"
+        (change)="onFilterChange()">
+        <option value="all">Tous les statuts</option>
+        <option value="client">Clients</option>
+        <option value="prospect">Prospects</option>
+        <option value="inactive">Inactifs</option>
+      </select>
+    </div>
+
+    <!-- Filtre Priorité -->
+    <div class="filter-group">
+      <label for="filter-priority" class="filter-label">⭐ Priorité</label>
+      <select 
+        id="filter-priority"
+        class="filter-select" 
+        [(ngModel)]="selectedPriority"
+        (change)="onFilterChange()">
+        <option value="all">Toutes les priorités</option>
+        <option value="haute">Haute</option>
+        <option value="moyenne">Moyenne</option>
+        <option value="basse">Basse</option>
+      </select>
+    </div>
+
+    <!-- Filtre Revenue Min -->
+    <div class="filter-group">
+      <label for="filter-min-revenue" class="filter-label">💰 Revenue Min</label>
+      <input 
+        id="filter-min-revenue"
+        type="number" 
+        class="filter-input" 
+        placeholder="Minimum"
+        [(ngModel)]="minRevenue"
+        (ngModelChange)="onFilterChange()">
+    </div>
+
+    <!-- Filtre Revenue Max -->
+    <div class="filter-group">
+      <label for="filter-max-revenue" class="filter-label">💰 Revenue Max</label>
+      <input 
+        id="filter-max-revenue"
+        type="number" 
+        class="filter-input" 
+        placeholder="Maximum"
+        [(ngModel)]="maxRevenue"
+        (ngModelChange)="onFilterChange()">
+    </div>
+  </div>
+
+  <!-- Bouton Effacer les filtres -->
+  <div class="filter-actions">
+    <button 
+      *ngIf="hasActiveFilters"
+      class="clear-filters-btn"
+      (click)="clearAllFilters()"
+      title="Réinitialiser tous les filtres">
+      ✕ Effacer tous les filtres
+    </button>
+  </div>
+
+  <!-- Statistiques des résultats -->
+  <div class="filter-stats" *ngIf="hasActiveFilters">
+    <div class="stat-item">
+      <span class="stat-label">Total:</span>
+      <span class="stat-value">{{ filteredStats.total }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Clients:</span>
+      <span class="stat-value">{{ filteredStats.clients }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Prospects:</span>
+      <span class="stat-value">{{ filteredStats.prospects }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Revenue:</span>
+      <span class="stat-value">{{ filteredStats.revenue | currency }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- Message si aucun résultat -->
+<div *ngIf="hasActiveFilters && filteredCount === 0" class="no-results">
+  <p>😕 Aucun client ne correspond à vos critères de recherche</p>
+  <button (click)="clearAllFilters()" class="btn-reset-search">
+    Réinitialiser les filtres
+  </button>
+</div>
+
+
+  <!-- Tableau des clients -->
+  <div class="table-wrapper">
+    <table class="clients-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let client of paginatedClients">
+          <td>{{ client.name }}</td>
+          <td>{{ client.email }}</td>
+          <td>{{ client.phone }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="'status-' + client.status">
+              {{ client.status }}
+            </span>
+          </td>
+          <td class="actions">
+            <button (click)="onClientSelected(client)" class="btn-view" title="Voir">👁️</button>
+            <button (click)="onClientEdited(client)" class="btn-edit" title="Éditer">✏️</button>
+            <button (click)="deleteClient(client.id)" class="btn-delete" title="Supprimer">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Message si aucun client -->
+  <div *ngIf="filteredClients.length === 0" class="no-results">
+    Aucun client trouvé
+  </div>
+<!-- ===== PAGINATION ===== -->
+<div class="pagination-container">
+  <!-- Information de page -->
+  <div class="pagination-info">
+    Page <strong>{{ currentPage }}</strong> / <strong>{{ totalPages }}</strong>
+    ({{ paginatedClients.length }} clients)
+  </div>
+
+  <!-- Boutons de navigation -->
+  <!-- Boutons de navigation -->
+<div class="pagination-buttons">
+  <!-- Bouton Précédent -->
+  <button 
+    class="btn-pagination" 
+    (click)="hasActiveFilters ? goPreviousFilteredPage() : goPreviousPage()"
+    [disabled]="currentPage === 1"
+    title="Aller à la page précédente">
+    ◀ Précédent
+  </button>
+
+  <!-- Boutons numéros de page -->
+  <button 
+    *ngFor="let pageNum of getPageNumbers()" 
+    class="btn-pagination"
+    [class.active]="pageNum === currentPage"
+    (click)="hasActiveFilters ? goToFilteredPage(pageNum) : goToPage(pageNum)"
+    [title]="'Aller à la page ' + pageNum">
+    {{ pageNum }}
+  </button>
+
+  <!-- Bouton Suivant -->
+  <button 
+    class="btn-pagination" 
+    (click)="hasActiveFilters ? goNextFilteredPage() : goNextPage()"
+    [disabled]="currentPage === totalPages"
+    title="Aller à la page suivante">
+    Suivant ▶
+  </button>
+</div>
+
+</div>
+
+</div>

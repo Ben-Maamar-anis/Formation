@@ -1,0 +1,13 @@
+<div class="export-container">
+  <div *ngIf="message" class="message" [class.error]="message.includes('❌')">
+    {{ message }}
+  </div>
+  <div class="actions">
+    <button class="btn btn-csv" (click)="exportCSV()" [disabled]="isExporting">
+      📥 Exporter CSV
+    </button>
+    <button class="btn btn-json" (click)="exportJSON()" [disabled]="isExporting">
+      📥 Exporter JSON
+    </button>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="detail-page">
+  
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Chargement du client...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage && !isLoading" class="error-container">
+    <div class="alert alert-error">{{ errorMessage }}</div>
+    <button class="btn btn-primary" (click)="goBack()">Retour à la liste</button>
+  </div>
+
+  <!-- Détails client -->
+  <div *ngIf="client && !isLoading" class="detail-container">
+    
+    <!-- Header -->
+    <div class="detail-header">
+      <button class="btn-back" (click)="goBack()">← Retour</button>
+      <h1>{{ client.name }}</h1>
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="onEdit()">✏️ Éditer</button>
+        <button class="btn btn-danger" (click)="onDelete()">🗑️ Supprimer</button>
+      </div>
+    </div>
+
+    <!-- Contenu en grille -->
+    <div class="detail-grid">
+      
+      <!-- Contact -->
+      <div class="detail-section">
+        <h2>📧 Contact</h2>
+        <div class="info-group">
+          <label>Email</label>
+          <p class="info-value">{{ client.email }}</p>
+        </div>
+        <div class="info-group">
+          <label>Téléphone</label>
+          <p class="info-value">{{ client.phone }}</p>
+        </div>
+        <div class="info-group">
+          <label>Entreprise</label>
+          <p class="info-value">{{ client.company }}</p>
+        </div>
+      </div>
+
+      <!-- Statut -->
+      <div class="detail-section">
+        <h2>📊 Statut</h2>
+        <div class="info-group">
+          <label>Statut</label>
+          <span class="badge" [ngClass]="'status-' + client.status">
+            {{ client.status | uppercase }}
+          </span>
+        </div>
+        <div class="info-group">
+          <label>Priorité</label>
+          <span class="badge" [ngClass]="'priority-' + client.priority">
+            {{ client.priority | uppercase }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Financement -->
+      <div class="detail-section">
+        <h2>💰 Financement</h2>
+        <div class="info-group">
+          <label>Revenu</label>
+          <p class="info-value revenue">{{ client.revenue | number:'1.0-0' }}€</p>
+        </div>
+
+    </div>
+
+    <!-- Notes -->
+    <div class="detail-section full-width">
+      <h2>📝 Notes</h2>
+      <p class="notes-text">{{ client.notes || 'Aucune note' }}</p>
+    </div>
+
+  </div>
+
+</div>

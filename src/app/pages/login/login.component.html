@@ -1,0 +1,121 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Header -->
+    <div class="login-header">
+      <h1 class="login-title">🚀 ClientFlow CRM</h1>
+      <p class="login-subtitle">Connexion à votre compte</p>
+    </div>
+
+    <!-- Affichage des erreurs globales -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <span class="alert-icon">⚠️</span>
+      <span class="alert-message">{{ errorMessage }}</span>
+      <button
+        type="button"
+        class="alert-close"
+        (click)="errorMessage = ''"
+        aria-label="Fermer l'alerte"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- Formulaire de connexion locale -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Champ Email -->
+      <div class="form-group">
+        <label for="email" class="form-label">
+          <span class="label-text">Email</span>
+          <span class="label-required">*</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="votre@email.com"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('email')"
+            autocomplete="email"
+          />
+          <span class="input-icon">📧</span>
+        </div>
+        <div *ngIf="isFieldInvalid('email')" class="error-message">
+          {{ getFieldError('email') }}
+        </div>
+      </div>
+
+      <!-- Champ Password -->
+      <div class="form-group">
+        <label for="password" class="form-label">
+          <span class="label-text">Mot de passe</span>
+          <span class="label-required">*</span>
+        </label>
+        <div class="input-wrapper">
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
+            class="form-control"
+            [class.is-invalid]="isFieldInvalid('password')"
+            autocomplete="current-password"
+          />
+          <span class="input-icon">🔒</span>
+        </div>
+        <div *ngIf="isFieldInvalid('password')" class="error-message">
+          {{ getFieldError('password') }}
+        </div>
+      </div>
+
+      <!-- Bouton Submit -->
+      <button
+        type="submit"
+        class="btn btn-primary btn-full"
+        [disabled]="!loginForm.valid || isSubmitting"
+      >
+        <span *ngIf="!isSubmitting" class="btn-text">Se connecter</span>
+        <span *ngIf="isSubmitting" class="btn-text">
+          <span class="spinner"></span>
+          Connexion en cours...
+        </span>
+      </button>
+    </form>
+
+    <!-- Séparateur -->
+    <div class="divider">
+      <span class="divider-text">Ou</span>
+    </div>
+
+    <!-- Bouton Google Sign In -->
+    <asl-google-signin-button 
+      type="standard" 
+      size="large" 
+      theme="outline" 
+      text="signin_with"
+      shape="rectangular">
+    </asl-google-signin-button>
+
+    <!-- Données de test -->
+    <div class="test-credentials">
+      <details class="credentials-details">
+        <summary class="credentials-summary">
+          🔧 Données de test (développement)
+        </summary>
+        <div class="credentials-content">
+          <p class="credential-item">
+            <strong>Email:</strong> <code>test&#64;example.com</code>
+          </p>
+          <p class="credential-item">
+            <strong>Mot de passe:</strong> <code>password123</code>
+          </p>
+        </div>
+      </details>
+    </div>
+
+    <!-- Footer -->
+    <footer class="login-footer">
+      <p class="footer-version">v1.0.0 • © 2026 ClientFlow CRM</p>
+    </footer>
+  </div>
+</div>

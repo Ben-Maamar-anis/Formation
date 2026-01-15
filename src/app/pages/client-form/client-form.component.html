@@ -1,0 +1,179 @@
+<div class="form-page">
+  
+  <!-- Header -->
+  <div class="form-header">
+    <h1>{{ isEditMode ? '✏️ Éditer' : '➕ Nouveau' }} Client</h1>
+  </div>
+
+
+
+  <!-- Formulaire -->
+  <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="client-form">
+    
+    <!-- Section 1 : Informations -->
+    <div class="form-section">
+      <h2>📋 Informations</h2>
+      
+      <!-- Nom -->
+      <div class="form-group">
+        <label for="name">Nom *</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="John Doe"
+          [class.error]="isFieldInvalid('name')"
+        >
+        <span *ngIf="isFieldInvalid('name')" class="error-text">
+          {{ getFieldError('name') }}
+        </span>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="john@example.com"
+          [class.error]="isFieldInvalid('email')"
+        >
+        <span *ngIf="isFieldInvalid('email')" class="error-text">
+          {{ getFieldError('email') }}
+        </span>
+      </div>
+
+      <!-- Téléphone -->
+      <div class="form-group">
+        <label for="phone">Téléphone *</label>
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          placeholder="+33 1 23 45 67 89"
+          [class.error]="isFieldInvalid('phone')"
+        >
+        <span *ngIf="isFieldInvalid('phone')" class="error-text">
+          {{ getFieldError('phone') }}
+        </span>
+      </div>
+
+      <!-- Entreprise -->
+      <div class="form-group">
+        <label for="company">Entreprise *</label>
+        <input
+          id="company"
+          type="text"
+          formControlName="company"
+          placeholder="Acme Corp"
+          [class.error]="isFieldInvalid('company')"
+        >
+        <span *ngIf="isFieldInvalid('company')" class="error-text">
+          {{ getFieldError('company') }}
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Section 2 : Statut & Priorité -->
+    <div class="form-section">
+      <h2>📊 Statut & Priorité</h2>
+      
+      <!-- Statut -->
+      <div class="form-group">
+        <label for="status">Statut *</label>
+        <select id="status" formControlName="status">
+          <option *ngFor="let status of statusOptions" [value]="status">
+            {{ status | titlecase }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Priorité -->
+      <div class="form-group">
+        <label for="priority">Priorité *</label>
+        <select id="priority" formControlName="priority">
+          <option *ngFor="let prio of priorityOptions" [value]="prio">
+            {{ prio | titlecase }}
+          </option>
+        </select>
+      </div>
+
+     
+
+    </div>
+
+    <!-- Section 3 : Financement -->
+    <div class="form-section">
+      <h2>💰 Financement</h2>
+      
+      <!-- Revenu -->
+      <div class="form-group">
+        <label for="revenue">Revenu (€) *</label>
+        <input
+          id="revenue"
+          type="number"
+          formControlName="revenue"
+          placeholder="50000"
+          [class.error]="isFieldInvalid('revenue')"
+        >
+        <span *ngIf="isFieldInvalid('revenue')" class="error-text">
+          {{ getFieldError('revenue') }}
+        </span>
+      </div>
+
+    
+
+    </div>
+
+    <!-- Section 4 : Dates -->
+    <div class="form-section">
+      <h2>📅 Dates</h2>
+      
+
+      <!-- Dernière interaction -->
+      <div class="form-group">
+        <label for="lastInteraction">Dernière interaction *</label>
+        <input
+          id="lastInteraction"
+          type="date"
+          formControlName="lastInteraction"
+          [class.error]="isFieldInvalid('lastInteraction')"
+        >
+        <span *ngIf="isFieldInvalid('lastInteraction')" class="error-text">
+          {{ getFieldError('lastInteraction') }}
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Section 5 : Notes -->
+    <div class="form-section">
+      <h2>📝 Notes</h2>
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea
+          id="notes"
+          formControlName="notes"
+          placeholder="Ajouter des notes..."
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isSubmitting">
+        Annuler
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Sauvegarde...' : (isEditMode ? 'Mettre à jour' : 'Créer') }}
+      </button>
+    </div>
+  <!-- Messages -->
+  <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  </form>
+
+</div>
