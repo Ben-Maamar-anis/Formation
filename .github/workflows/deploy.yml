@@ -30,10 +30,12 @@ jobs:
         run: npx ng build --configuration production --base-href=/Formation/
       
       - name: Add .nojekyll
-        run: touch dist/Formation/browser/.nojekyll
+        run: touch dist/formation/.nojekyll
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/Formation/browser
+          publish_dir: ./dist/formation
+          
+          
