@@ -2,7 +2,7 @@ name: Deploy Angular to GitHub Pages
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -24,14 +24,16 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       
       - name: Build application
-        run: npm run build:prod
+        run: ng build --configuration production --base-href=/Formation/
+      
+      - name: Add .nojekyll
+        run: touch dist/Formation/browser/.nojekyll
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/formation
-          cname: # Optionnel : votre domaine personnalisé
+          publish_dir: ./dist/Formation/browser
