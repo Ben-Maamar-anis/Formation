@@ -14,7 +14,7 @@ import { ClientService } from './services/client.service';
 })
 export class AppComponent implements OnInit {
   currentUser: any;
-  title = 'semaine2 ClientFlow CRM';
+  title = 'ClientFlow CRM';
   
   constructor(private authService: AuthService, private clientService: ClientService, private router: Router,) {}
   

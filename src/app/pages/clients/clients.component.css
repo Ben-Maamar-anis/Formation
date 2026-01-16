@@ -212,10 +212,12 @@
   display: flex;
   gap: 8px;
 }
-
+.routes{
+  margin-right: 15px;
+}
 .search-input {
   flex: 1;
-  padding: 12px 15px;
+  padding: 12px 0px;
   border: 2px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
